@@ -1,79 +1,66 @@
-package LibraryManagementSystem;
+import java.util.ArrayList;
+import java.util.Stack;
 
 public class Library {
-    private Book[] books;
-    private int size;
+    private String[] categories; // Fixed categories
+    private ArrayList<Book> books; // Dynamic list of books
+    private Stack<Action> actionStack; // Stack for undo operations
 
-    public Library(int capacity) {
-        books = new Book[capacity];
-        size = 0;
+    public Library(String[] categories) {
+        this.categories = categories;
+        this.books = new ArrayList<>();
+        this.actionStack = new Stack<>();
     }
 
+    public void addBook(Book book) {
+        books.add(book);
+        actionStack.push(new Action("ADD", book)); // Push action for undo
+    }
 
-    public void add(Book book) {
-        if (size == books.length) {
-            resize();
+    public void removeBook(int index) {
+        if (index >= 0 && index < books.size()) {
+            Book removedBook = books.remove(index);
+            actionStack.push(new Action("REMOVE", removedBook)); // Push action for undo
         }
-        books[size] = book;
-        size++;
     }
 
-    public void insert(int index, Book book) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Invalid index");
+    public void undoLastAction() {
+        if (!actionStack.isEmpty()) {
+            Action lastAction = actionStack.pop();
+            if (lastAction.getType().equals("ADD")) {
+                books.remove(lastAction.getBook());
+            } else if (lastAction.getType().equals("REMOVE")) {
+                books.add(lastAction.getBook());
+            }
         }
-        if (size == books.length) {
-            resize();
+    }
+
+    public void sortBooks() {
+        Book[] bookArray = books.toArray(new Book[0]);
+        shellSort(bookArray); // Sort using Shell Sort
+        books.clear();
+        for (Book book : bookArray) {
+            books.add(book);
         }
-        for (int i = size; i > index; i--) {
-            books[i] = books[i - 1];
+    }
+
+    private void shellSort(Book[] array) {
+        int n = array.length;
+        for (int gap = n / 2; gap > 0; gap /= 2) {
+            for (int i = gap; i < n; i++) {
+                Book temp = array[i];
+                int j;
+                for (j = i; j >= gap && array[j - gap].getTitle().compareTo(temp.getTitle()) > 0; j -= gap) {
+                    array[j] = array[j - gap];
+                }
+                array[j] = temp;
+            }
         }
-        books[index] = book;
-        size++;
     }
-
-
-    public void remove(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Invalid index");
-        }
-        for (int i = index; i < size - 1; i++) {
-            books[i] = books[i + 1];
-        }
-        books[size - 1] = null;
-        size--;
-    }
-
-
-    public Book get(int index) {
-        if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Invalid index");
-        }
-        return books[index];
-    }
-
-
-    public int size() {
-        return size;
-    }
-
-
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-
-    private void resize() {
-        Book[] newBooks = new Book[books.length * 2];
-        System.arraycopy(books, 0, newBooks, 0, books.length);
-        books = newBooks;
-    }
-
 
     public void displayBooks() {
-        for (int i = 0; i < size; i++) {
-            System.out.println(books[i]);
+        for (Book book : books) {
+            System.out.println(book);
         }
     }
 }
-
