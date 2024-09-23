@@ -1,0 +1,373 @@
+package LibraryManagementSystem;
+
+import java.awt.EventQueue;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class GUI extends JFrame {
+
+    private static final long serialVersionUID = 1L;
+    private JPanel contentPane;
+    private JTextField addTitleField;
+    private JTextField addAuthorField;
+    private JTextField addIsbnField;
+    private JTextField insertIndexField;
+    private JTextField insertTitleField;
+    private JTextField insertAuthorField;
+    private JTextField insertIsbnField;
+    private Library library;  
+    private JTextField textFieldIns2;
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    GUI frame = new GUI();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * Create the frame.
+     */
+    public GUI() {
+        library = new Library(10);  
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 1025, 697);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
+
+        JPanel panel = new JPanel();
+        panel.setBackground(SystemColor.inactiveCaption);
+        panel.setBounds(0, 0, 1373, 113);
+        contentPane.add(panel);
+        panel.setLayout(null);
+
+        JLabel lblNewLabel = new JLabel("Library Management System");
+        lblNewLabel.setFont(new Font("Arial", Font.BOLD, 36));
+        lblNewLabel.setBounds(259, 27, 549, 62);
+        panel.add(lblNewLabel);
+
+        
+        JPanel addBookPanel = new JPanel();
+        addBookPanel.setBackground(SystemColor.inactiveCaption);
+        addBookPanel.setBounds(0, 123, 323, 537);
+        contentPane.add(addBookPanel);
+        addBookPanel.setLayout(null);
+
+        JLabel addBookLabel = new JLabel("Add books here!");
+        addBookLabel.setBounds(76, 30, 307, 26);
+        addBookPanel.add(addBookLabel);
+        addBookLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+
+        addTitleField = new JTextField();
+        addTitleField.setBackground(SystemColor.control);
+        addTitleField.setBounds(36, 107, 234, 39);
+        addBookPanel.add(addTitleField);
+        addTitleField.setColumns(10);
+
+        JLabel lblNewLabel_2 = new JLabel("Book Title");
+        lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2.setBounds(113, 84, 116, 13);
+        addBookPanel.add(lblNewLabel_2);
+
+        addAuthorField = new JTextField();
+        addAuthorField.setBackground(SystemColor.control);
+        addAuthorField.setColumns(10);
+        addAuthorField.setBounds(36, 192, 234, 39);
+        addBookPanel.add(addAuthorField);
+
+        addIsbnField = new JTextField();
+        addIsbnField.setBackground(SystemColor.control);
+        addIsbnField.setColumns(10);
+        addIsbnField.setBounds(36, 283, 234, 39);
+        addBookPanel.add(addIsbnField);
+
+        JLabel lblNewLabel_2_1 = new JLabel("Book Author");
+        lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_1.setBounds(113, 169, 116, 13);
+        addBookPanel.add(lblNewLabel_2_1);
+
+        JLabel lblNewLabel_2_1_1 = new JLabel("Book ISBN");
+        lblNewLabel_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_1_1.setBounds(113, 260, 116, 13);
+        addBookPanel.add(lblNewLabel_2_1_1);
+        
+        JButton btnAddBook = new JButton("Add Book");
+        btnAddBook.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnAddBook.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		String title = addTitleField.getText();
+        		String author = addAuthorField.getText();
+        		String isbn = addIsbnField.getText();
+        		
+        		if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
+        			Book book = new Book(title, author, isbn);
+        			library.add(book);
+        			JOptionPane.showMessageDialog(null, "Book Added Successfully!");
+        			clearAddBookFields();
+        		} else {
+        			JOptionPane.showMessageDialog(null, "Please Fill in All Fields!");
+        		}
+        	}
+        });
+        btnAddBook.setBounds(36, 358, 234, 39);
+        addBookPanel.add(btnAddBook);
+        
+        JButton btnNewButton = new JButton("Exit");
+        btnNewButton.setBounds(10, 506, 85, 21);
+        addBookPanel.add(btnNewButton);
+        btnNewButton.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		System.exit(0);
+        	}
+        });
+        btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
+
+        
+        JPanel insertBookPanel = new JPanel();
+        insertBookPanel.setBackground(SystemColor.inactiveCaption);
+        insertBookPanel.setBounds(348, 123, 323, 537);
+        contentPane.add(insertBookPanel);
+        insertBookPanel.setLayout(null);
+
+        JLabel insertBookLabel = new JLabel("Insert your books here!");
+        insertBookLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+        insertBookLabel.setBounds(36, 28, 307, 26);
+        insertBookPanel.add(insertBookLabel);
+
+        insertIndexField = new JTextField();
+        insertIndexField.setColumns(10);
+        insertIndexField.setBackground(SystemColor.control);
+        insertIndexField.setBounds(36, 106, 234, 39);
+        insertBookPanel.add(insertIndexField);
+
+        JLabel lblNewLabel_2_2_1 = new JLabel("Enter Index");
+        lblNewLabel_2_2_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_2_1.setBounds(102, 83, 116, 13);
+        insertBookPanel.add(lblNewLabel_2_2_1);
+
+        insertTitleField = new JTextField();
+        insertTitleField.setBackground(SystemColor.control);
+        insertTitleField.setColumns(10);
+        insertTitleField.setBounds(36, 195, 234, 39);
+        insertBookPanel.add(insertTitleField);
+
+        JLabel lblNewLabel_2_2 = new JLabel("Book Title");
+        lblNewLabel_2_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_2.setBounds(113, 172, 116, 13);
+        insertBookPanel.add(lblNewLabel_2_2);
+
+        insertAuthorField = new JTextField();
+        insertAuthorField.setBackground(SystemColor.control);
+        insertAuthorField.setColumns(10);
+        insertAuthorField.setBounds(36, 283, 234, 39);
+        insertBookPanel.add(insertAuthorField);
+
+        JLabel lblNewLabel_2_1_2 = new JLabel("Book Author");
+        lblNewLabel_2_1_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_1_2.setBounds(113, 260, 116, 13);
+        insertBookPanel.add(lblNewLabel_2_1_2);
+
+        insertIsbnField = new JTextField();
+        insertIsbnField.setBackground(SystemColor.control);
+        insertIsbnField.setColumns(10);
+        insertIsbnField.setBounds(36, 367, 234, 39);
+        insertBookPanel.add(insertIsbnField);
+
+        JLabel lblNewLabel_2_1_1_2 = new JLabel("Book ISBN");
+        lblNewLabel_2_1_1_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_2_1_1_2.setBounds(113, 344, 116, 13);
+        insertBookPanel.add(lblNewLabel_2_1_1_2);
+
+        JButton btnInsertBook = new JButton("Insert Book");
+        btnInsertBook.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnInsertBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int index = Integer.parseInt(insertIndexField.getText());
+                    String title = insertTitleField.getText();
+                    String author = insertAuthorField.getText();
+                    String isbn = insertIsbnField.getText();
+
+                    if (!title.isEmpty() && !author.isEmpty() && !isbn.isEmpty()) {
+                        Book book = new Book(title, author, isbn);
+                        library.insert(index, book);
+                        JOptionPane.showMessageDialog(null, "Book inserted successfully!");
+                        clearInsertBookFields();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Please fill in all fields.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid index.");
+                } catch (IndexOutOfBoundsException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                }
+            }
+        });
+        btnInsertBook.setForeground(SystemColor.activeCaptionText);
+        btnInsertBook.setBackground(Color.WHITE);
+        btnInsertBook.setBounds(36, 439, 234, 39);
+        insertBookPanel.add(btnInsertBook);
+
+       
+        JPanel additionalOptionsPanel = new JPanel();
+        additionalOptionsPanel.setBackground(SystemColor.inactiveCaption);
+        additionalOptionsPanel.setBounds(695, 123, 295, 537);
+        contentPane.add(additionalOptionsPanel);
+        additionalOptionsPanel.setLayout(null);
+
+        JLabel lblNewLabel_3 = new JLabel("Additional Options");
+        lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 20));
+        lblNewLabel_3.setBounds(49, 29, 234, 25);
+        additionalOptionsPanel.add(lblNewLabel_3);
+
+        JButton btnRemoveBook = new JButton("Remove Book");
+        btnRemoveBook.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnRemoveBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int index = Integer.parseInt(textFieldIns2.getText());
+                    library.remove(index);
+                    JOptionPane.showMessageDialog(null, "Book removed successfully!");
+                    clearInsertBookFields();
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid index.");
+                } catch (IndexOutOfBoundsException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                }
+            }
+        });
+        btnRemoveBook.setForeground(SystemColor.activeCaptionText);
+        btnRemoveBook.setBackground(Color.WHITE);
+        btnRemoveBook.setBounds(35, 155, 234, 39);
+        additionalOptionsPanel.add(btnRemoveBook);
+
+        JButton btnDisplayBooks = new JButton("Display Books");
+        btnDisplayBooks.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnDisplayBooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < library.size(); i++) {
+                    sb.append("Index ").append(i).append(": ")
+                      .append(library.get(i).toString()).append("\n");
+                }
+                JOptionPane.showMessageDialog(null, sb.toString());
+            }
+        });
+        btnDisplayBooks.setForeground(SystemColor.activeCaptionText);
+        btnDisplayBooks.setBackground(Color.WHITE);
+        btnDisplayBooks.setBounds(35, 204, 234, 39);
+        additionalOptionsPanel.add(btnDisplayBooks);
+
+        JButton btnGetBook = new JButton("Get Book");
+        btnGetBook.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnGetBook.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    int index = Integer.parseInt(textFieldIns2.getText());
+                    Book book = library.get(index);
+                    if (book != null) {
+                        JOptionPane.showMessageDialog(null, "Book at index " + index + ":\n" + book.toString());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No book found at this index.");
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter a valid index.");
+                } catch (IndexOutOfBoundsException ex) {
+                    JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                }
+            }
+        });
+        btnGetBook.setForeground(SystemColor.activeCaptionText);
+        btnGetBook.setBackground(Color.WHITE);
+        btnGetBook.setBounds(35, 253, 234, 39);
+        additionalOptionsPanel.add(btnGetBook);
+
+        JButton btnGetTotalBooks = new JButton("Get Total Books");
+        btnGetTotalBooks.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnGetTotalBooks.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Total number of books: " + library.size());
+            }
+        });
+        btnGetTotalBooks.setForeground(SystemColor.activeCaptionText);
+        btnGetTotalBooks.setBackground(Color.WHITE);
+        btnGetTotalBooks.setBounds(35, 302, 234, 39);
+        additionalOptionsPanel.add(btnGetTotalBooks);
+        
+        textFieldIns2 = new JTextField();
+        textFieldIns2.setBackground(SystemColor.control);
+        textFieldIns2.setBounds(35, 106, 234, 39);
+        additionalOptionsPanel.add(textFieldIns2);
+        textFieldIns2.setColumns(10);
+        
+        JLabel lblNewLabel_1 = new JLabel("Enter Index");
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+        lblNewLabel_1.setBounds(107, 82, 109, 13);
+        additionalOptionsPanel.add(lblNewLabel_1);
+        
+        JButton btnNewButton_1 = new JButton("Undo");
+        btnNewButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    Book removedBook = library.pop(); // Assuming 'library' refers to your array of books
+                    JOptionPane.showMessageDialog(null, "Removed the last added book: " + removedBook.getTitle());
+                } catch (IllegalStateException ex) {
+                    JOptionPane.showMessageDialog(null, "No more books to undo.", "Undo Error", JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
+
+        btnNewButton_1.setBackground(SystemColor.inactiveCaptionBorder);
+        btnNewButton_1.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnNewButton_1.setBounds(35, 351, 234, 44);
+        additionalOptionsPanel.add(btnNewButton_1);
+        
+        JButton btnNewButton_2 = new JButton("Sort");
+        btnNewButton_2.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnNewButton_2.setBounds(35, 405, 234, 39);
+        additionalOptionsPanel.add(btnNewButton_2);
+        btnNewButton_2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Call the sort method to sort books by title
+                library.sortBooksByTitle();
+                
+                JOptionPane.showMessageDialog(null, "Books sorted by title.");
+            }
+        });
+    }
+
+    
+    private void clearAddBookFields() {
+        addTitleField.setText("");
+        addAuthorField.setText("");
+        addIsbnField.setText("");
+    }
+
+    
+    private void clearInsertBookFields() {
+        insertTitleField.setText("");
+        insertAuthorField.setText("");
+        insertIsbnField.setText("");
+        insertIndexField.setText("");
+        
+    }
+}
